@@ -10,7 +10,7 @@ Load environment variables from `.env` for your application using `getenv()` or 
 
 ## Installation
 
-1. Install Composer
+1.  Install Composer
 
 ```sh
 $ curl -s http://getcomposer.org/installer | php
