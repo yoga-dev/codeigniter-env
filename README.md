@@ -1,37 +1,139 @@
-## Welcome to GitHub Pages
+# Codeigniter env
 
-You can use the [editor on GitHub](https://github.com/yoga-dev/codeigniter-env/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+Simple env setup for codeigniter application with single or multiple _.env_ configuration. Configure your application based on your need.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+Load environment variables from `.env` for your application using `getenv()` or `$_ENV`.
 
-### Markdown
+## Installation
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+1. Install Composer
 
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+```sh
+$ curl -s http://getcomposer.org/installer | php
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+2. copy the `.env.example` and `.htaccess` from method1 or method2 in repo and paste it to your CodeIgniter root.
+3. Install package on root directory
 
-### Jekyll Themes
+```sh
+$ composer require symfony/dotenv
+```
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/yoga-dev/codeigniter-env/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+## Configuration
 
-### Support or Contact
+1. Enable your Composer Autoload and Hooks: `application/config/config.php`
 
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+`$config['enable_hooks'] = FALSE;` to `$config['enable_hooks'] = TRUE;`
+
+`$config['composer_autoload'] = FALSE;` to `$config['composer_autoload'] = 'vendor/autoload.php';`
+
+2. Add this code to your application hooks: `application/config/hooks.php`
+
+### Method 1 (Single env)
+
+```php
+$hook['pre_system'] = function () {
+    $dotenv = new Symfony\Component\Dotenv\Dotenv();
+    $dotenv->load(__DIR__.'/../../.env');
+};
+```
+### Method 2 (Multiple env)
+
+```php
+$hook['pre_system'] = function () {
+    $dotenv = new Symfony\Component\Dotenv\Dotenv();
+    $dotenv->load(__DIR__.'/../../.env.'.getenv('CI_ENV'));
+};
+```
+
+3. Create your _.env_ files
+
+### Method 1 (Single env)
+
+```sh
+$ cp .env.example .env
+```
+
+> Define your application environment `CI_ENV` variable in _.env_ only for this method.
+
+### Method 2 (Multiple env) 
+#### Predefined Environments (development, testing, production)
+
+```sh
+$ cp .env.example .env.development
+```
+
+> Use these environment names only. For additional environments add a switch case in `index.php` Line No. : 66
+
+> Set the environment in `.htaccess` file. Line No. : 3 & 12. If environment is not set in `.htaccess` file the application won\'t run.
+
+```apacheconf
+<IfModule mod_env.c>
+    #Set Environment(development,testing,production)
+    SetEnv CI_ENV development
+</IfModule>
+<IfModule mod_rewrite.c>
+    #if mod_env module not enabled in server
+    #Set Environment(development,testing,production)
+    RewriteRule ^ - [E=CI_ENV:development]
+</IfModule>
+```
+
+## Usage Example
+
+### Database Configuration
+
+1. Edit the `application/config/database.php`
+2. Replace this code:
+
+```php
+$db['default'] = [
+	'dsn'	=> '',
+	'hostname' => 'localhost',
+	'username' => '',
+	'password' => '',
+	'database' => '',
+	'dbdriver' => 'mysqli',
+	'dbprefix' => '',
+	'pconnect' => FALSE,
+	'db_debug' => (ENVIRONMENT !== 'production'),
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt' => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => [],
+	'save_queries' => TRUE
+
+];
+```
+
+to
+
+```php
+$db['default'] = [
+    'dsn'          => '',
+    'hostname'     => getenv('DB_HOSTNAME'),
+    'username'     => getenv('DB_USERNAME'),
+    'password'     => getenv('DB_PASSWORD'),
+    'database'     => getenv('DB_DATABASE'),
+    'dbdriver'     => 'mysqli',
+    'dbprefix'     => getenv('DB_PREFIX'),
+    'pconnect'     => false,
+    'db_debug'     => (ENVIRONMENT !== 'production'),
+    'cache_on'     => false,
+    'cachedir'     => '',
+    'char_set'     => getenv('DB_CHAT_SET'),
+    'dbcollat'     => getenv('DB_COLLATION'),
+    'swap_pre'     => '',
+    'encrypt'      => false,
+    'compress'     => false,
+    'stricton'     => false,
+    'failover'     => [],
+    'save_queries' => true,
+
+];
+```
