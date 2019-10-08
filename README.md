@@ -16,8 +16,8 @@ Load environment variables from `.env` for your application using `getenv()` or 
 $ curl -s http://getcomposer.org/installer | php
 ```
 
-2. copy the `.env.example` and `.htaccess` from method1 or method2 in repo and paste it to your CodeIgniter root.
-3. Install package on root directory
+2.  copy the `.env.example` and `.htaccess` from method1 or method2 in repo and paste it to your CodeIgniter root.
+3.  Install package on root directory
 
 ```sh
 $ composer require symfony/dotenv
@@ -25,13 +25,13 @@ $ composer require symfony/dotenv
 
 ## Configuration
 
-1. Enable your Composer Autoload and Hooks: `application/config/config.php`
+1.  Enable your Composer Autoload and Hooks: `application/config/config.php`
 
 `$config['enable_hooks'] = FALSE;` to `$config['enable_hooks'] = TRUE;`
 
 `$config['composer_autoload'] = FALSE;` to `$config['composer_autoload'] = 'vendor/autoload.php';`
 
-2. Add this code to your application hooks: `application/config/hooks.php`
+2.  Add this code to your application hooks: `application/config/hooks.php`
 
 ### Method 1 (Single env)
 
@@ -50,9 +50,9 @@ $hook['pre_system'] = function () {
 };
 ```
 
-3. Create your _.env_ files
+3.  Create your _.env_ files
 
-### Method 1 (Single env)
+### Using Method 1(Single env)
 
 ```sh
 $ cp .env.example .env
@@ -60,7 +60,7 @@ $ cp .env.example .env
 
 > Define your application environment `CI_ENV` variable in _.env_ only for this method.
 
-### Method 2 (Multiple env) 
+### Using Method 2 (Multiple env) 
 #### Predefined Environments (development, testing, production)
 
 ```sh
@@ -68,7 +68,6 @@ $ cp .env.example .env.development
 ```
 
 > Use these environment names only. For additional environments add a switch case in `index.php` Line No. : 66
-
 > Set the environment in `.htaccess` file. Line No. : 3 & 12. If environment is not set in `.htaccess` file the application won\'t run.
 
 ```apacheconf
@@ -87,8 +86,8 @@ $ cp .env.example .env.development
 
 ### Database Configuration
 
-1. Edit the `application/config/database.php`
-2. Replace this code:
+1.  Edit the `application/config/database.php`
+2.  Replace this code:
 
 ```php
 $db['default'] = [
