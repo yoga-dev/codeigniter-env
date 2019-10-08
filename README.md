@@ -1,8 +1,10 @@
 # Codeigniter env
 
+[![Codeigniter](https://img.shields.io/badge/Codeigniter-v3.1+-orange.svg)](http://codeigniter.com/)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/c6a897f69d6c4929bdc5220555576a14)](https://www.codacy.com/manual/yoga-dev/codeigniter-env)
+[![StyleCI](https://github.styleci.io/repos/213576220/shield?branch=master)](https://github.styleci.io/repos/213576220)
 
-Simple env setup for codeigniter application with single or multiple _.env_ configuration. Configure your application based on your need.
+Simple env setup for your codeigniter application with single or multiple _.env_ configuration. Configure your application based on your need.
 
 Load environment variables from `.env` for your application using `getenv()` or `$_ENV`.
 
