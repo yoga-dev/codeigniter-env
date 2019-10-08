@@ -1,0 +1,24 @@
+<IfModule mod_env.c>
+    #Set Environment(development,testing,production)
+    SetEnv CI_ENV development
+</IfModule>
+<IfModule mod_rewrite.c>
+    # Disable index view
+    Options -Indexes
+    RewriteEngine On
+    #RewriteBase /foldername/
+    #if mod_env module not enabled in server
+    #Set Environment(development,testing,production)
+    RewriteRule ^ - [E=CI_ENV:development]
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ index.php/$1 [L]
+    #Enable SSL
+    #RewriteCond %{HTTPS} !=on
+    #RewriteRule .* https://%{SERVER_NAME}%{REQUEST_URI} [R,L]
+    # Hide a specific file
+    <Files ~ "\.(env.*|json|config.js|md|gitignore|gitattributes|lock)$">
+        Order allow,deny
+        Deny from all
+    </Files>
+</IfModule>
