@@ -1,5 +1,7 @@
 # Codeigniter env
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/c6a897f69d6c4929bdc5220555576a14)](https://www.codacy.com/manual/yoga-dev/codeigniter-env)
+
 Simple env setup for codeigniter application with single or multiple _.env_ configuration. Configure your application based on your need.
 
 Load environment variables from `.env` for your application using `getenv()` or `$_ENV`.
